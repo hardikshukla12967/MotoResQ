@@ -17,3 +17,123 @@ function cancelAlert(){clearInterval(interval);addHistory("Alert Cancelled");clo
 function sendAlert(){addHistory("SOS Alert Sent");$("#modalContent").innerHTML='<div class="sos-icon">📡</div><p class="eyebrow">DEMO COMPLETE</p><h2>SOS Alert Prepared</h2><p class="muted">In Phase 1, no real SMS or call is sent. A future backend/hardware phase would handle emergency delivery.</p><button class="primary" onclick="closeModal()">Close</button>';$("#safeText").textContent="SOS DEMO COMPLETED"}
 function addHistory(status){let a=history();a.unshift({status,time:now(),location:"Demo location • 26.8467° N, 80.9462° E"});localStorage.setItem("motoresqHistory",JSON.stringify(a));renderHistory()}
 function clock(){let c=$("#clock");if(c)c.textContent=new Date().toLocaleString()}setInterval(clock,1000);clock();loadProfile();renderContacts();renderHistory();
+/* =========================
+   SAFETY SCORE SYSTEM
+========================= */
+
+function updateSafetyScore() {
+
+    // Get saved profile
+    const profile =
+        JSON.parse(localStorage.getItem("motoresqProfile")) || {};
+
+    // Get emergency contacts
+    const contacts =
+        JSON.parse(localStorage.getItem("motoresqContacts")) || [];
+
+    let score = 0;
+
+    // Profile check
+    const profileCompleted =
+        profile.name &&
+        profile.blood;
+
+    // Emergency contact check
+    const contactAdded =
+        contacts.length > 0;
+
+    // Vehicle check
+    const vehicleAdded =
+        profile.vehicle;
+
+    if (profileCompleted) {
+        score += 40;
+
+        const profileCheck =
+            document.getElementById("profileCheck");
+
+        if (profileCheck) {
+            profileCheck.textContent = "✅";
+        }
+
+    } else {
+
+        const profileCheck =
+            document.getElementById("profileCheck");
+
+        if (profileCheck) {
+            profileCheck.textContent = "❌";
+        }
+    }
+
+
+    if (contactAdded) {
+
+        score += 40;
+
+        const contactCheck =
+            document.getElementById("contactCheck");
+
+        if (contactCheck) {
+            contactCheck.textContent = "✅";
+        }
+
+    } else {
+
+        const contactCheck =
+            document.getElementById("contactCheck");
+
+        if (contactCheck) {
+            contactCheck.textContent = "❌";
+        }
+    }
+
+
+    if (vehicleAdded) {
+
+        score += 20;
+
+        const vehicleCheck =
+            document.getElementById("vehicleCheck");
+
+        if (vehicleCheck) {
+            vehicleCheck.textContent = "✅";
+        }
+
+    } else {
+
+        const vehicleCheck =
+            document.getElementById("vehicleCheck");
+
+        if (vehicleCheck) {
+            vehicleCheck.textContent = "❌";
+        }
+    }
+
+
+    // Update score number
+    const scoreElement =
+        document.getElementById("safetyScore");
+
+    if (scoreElement) {
+        scoreElement.textContent = score;
+    }
+
+
+    // Update progress bar
+    const progressElement =
+        document.getElementById("safetyProgress");
+
+    if (progressElement) {
+        progressElement.style.width = score + "%";
+    }
+}
+
+
+/* Run when page loads */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    updateSafetyScore();
+
+});
