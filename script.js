@@ -34,19 +34,16 @@ function toast(t) {
 
 function showPage(id) {
 
-    // Remove active class from all pages
     $$(".page").forEach(p => {
         p.classList.remove("active-page");
     });
 
-    // Activate selected page
     const page = $("#" + id);
 
     if (page) {
         page.classList.add("active-page");
     }
 
-    // Update active tab
     $$(".tab").forEach(t => {
         t.classList.toggle(
             "active",
@@ -54,7 +51,6 @@ function showPage(id) {
         );
     });
 
-    // Update page title
     const pageTitle = $("#pageTitle");
 
     if (pageTitle) {
@@ -66,77 +62,257 @@ function showPage(id) {
 }
 
 
-// Tab click events
+/* =========================
+   TAB CLICK EVENTS
+========================= */
+
 $$(".tab").forEach(t => {
+
     t.onclick = () => {
         showPage(t.dataset.page);
     };
+
 });
 
 
 /* =========================
-   PROFILE
+   RIDER PROFILE
 ========================= */
+
+/*
+    HTML IDs:
+    riderName
+    riderPhone
+    bloodGroup
+    medicalCondition
+    allergies
+    vehicleNumber
+    riderAddress
+*/
+
+function getProfile() {
+
+    try {
+
+        return JSON.parse(
+            localStorage.getItem("motoresqProfile") || "{}"
+        );
+
+    } catch (error) {
+
+        console.error("Profile data error:", error);
+
+        return {};
+    }
+}
+
 
 function loadProfile() {
 
-    const p = JSON.parse(
-        localStorage.getItem("motoresqProfile") || "{}"
-    );
+    const p = getProfile();
 
-    [
-        "name",
-        "blood",
-        "medical",
-        "allergies",
-        "vehicle"
-    ].forEach(k => {
 
-        const element = $("#" + k);
+    const fields = {
+
+        riderName: p.name || "",
+
+        riderPhone: p.phone || "",
+
+        bloodGroup: p.blood || "",
+
+        medicalCondition: p.medical || "",
+
+        allergies: p.allergies || "",
+
+        vehicleNumber: p.vehicle || "",
+
+        riderAddress: p.address || ""
+
+    };
+
+
+    Object.keys(fields).forEach(id => {
+
+        const element = $("#" + id);
 
         if (element) {
-            element.value = p[k] || "";
+            element.value = fields[id];
         }
 
     });
+
 
     updateSafetyScore();
 }
 
 
+/* =========================
+   SAVE RIDER PROFILE
+========================= */
+
 if ($("#profileForm")) {
 
-    $("#profileForm").onsubmit = function (e) {
+    $("#profileForm").addEventListener(
+        "submit",
+        function (e) {
 
-        e.preventDefault();
+            e.preventDefault();
 
-        const p = {};
 
-        [
-            "name",
-            "blood",
-            "medical",
-            "allergies",
-            "vehicle"
-        ].forEach(k => {
+            const name =
+                $("#riderName")?.value.trim() || "";
 
-            const element = $("#" + k);
+            const phone =
+                $("#riderPhone")?.value.trim() || "";
 
-            p[k] = element
-                ? element.value.trim()
-                : "";
+            const blood =
+                $("#bloodGroup")?.value.trim() || "";
 
-        });
+            const medical =
+                $("#medicalCondition")?.value.trim() || "";
 
-        localStorage.setItem(
-            "motoresqProfile",
-            JSON.stringify(p)
-        );
+            const allergies =
+                $("#allergies")?.value.trim() || "";
 
-        updateSafetyScore();
+            const vehicle =
+                $("#vehicleNumber")?.value.trim().toUpperCase() || "";
 
-        toast("Profile saved locally");
-    };
+            const address =
+                $("#riderAddress")?.value.trim() || "";
+
+
+            /* =========================
+               VALIDATION
+            ========================= */
+
+            if (!name) {
+
+                toast("Please enter your full name");
+
+                $("#riderName")?.focus();
+
+                return;
+            }
+
+
+            if (!phone) {
+
+                toast("Please enter your phone number");
+
+                $("#riderPhone")?.focus();
+
+                return;
+            }
+
+
+            /*
+                Accepts Indian numbers such as:
+                9876543210
+                +919876543210
+                09876543210
+            */
+
+            const phonePattern =
+                /^(\+91[\s-]?)?[6-9]\d{9}$/;
+
+
+            const cleanPhone =
+                phone.replace(/[\s-]/g, "");
+
+
+            if (!phonePattern.test(cleanPhone)) {
+
+                toast("Please enter a valid Indian phone number");
+
+                $("#riderPhone")?.focus();
+
+                return;
+            }
+
+
+            if (!blood) {
+
+                toast("Please select your blood group");
+
+                $("#bloodGroup")?.focus();
+
+                return;
+            }
+
+
+            if (!vehicle) {
+
+                toast("Please enter your vehicle number");
+
+                $("#vehicleNumber")?.focus();
+
+                return;
+            }
+
+
+            /* =========================
+               CREATE PROFILE OBJECT
+            ========================= */
+
+            const profile = {
+
+                name: name,
+
+                phone: phone,
+
+                blood: blood,
+
+                medical: medical,
+
+                allergies: allergies,
+
+                vehicle: vehicle,
+
+                address: address,
+
+                updatedAt: now()
+
+            };
+
+
+            /* =========================
+               SAVE TO LOCAL STORAGE
+            ========================= */
+
+            localStorage.setItem(
+                "motoresqProfile",
+                JSON.stringify(profile)
+            );
+
+
+            /* =========================
+               UPDATE SAFETY SCORE
+            ========================= */
+
+            updateSafetyScore();
+
+
+            /* =========================
+               SUCCESS MESSAGE
+            ========================= */
+
+            toast("✅ Rider profile saved successfully");
+
+
+            /*
+                Optional:
+                return user to dashboard
+                after saving.
+            */
+
+            setTimeout(() => {
+
+                showPage("dashboard");
+
+            }, 800);
+
+        }
+    );
 }
 
 
@@ -146,9 +322,18 @@ if ($("#profileForm")) {
 
 function contacts() {
 
-    return JSON.parse(
-        localStorage.getItem("motoresqContacts") || "[]"
-    );
+    try {
+
+        const data = JSON.parse(
+            localStorage.getItem("motoresqContacts") || "[]"
+        );
+
+        return Array.isArray(data) ? data : [];
+
+    } catch (error) {
+
+        return [];
+    }
 }
 
 
@@ -160,6 +345,7 @@ function renderContacts() {
 
     const a = contacts();
 
+
     if (a.length) {
 
         list.innerHTML = a.map((c, i) => `
@@ -167,7 +353,9 @@ function renderContacts() {
             <div class="contact">
 
                 <div>
+
                     <b>${esc(c.name)}</b>
+
                     <br>
 
                     <small>
@@ -175,9 +363,12 @@ function renderContacts() {
                         •
                         ${esc(c.relation)}
                     </small>
+
                 </div>
 
+
                 <button
+                    type="button"
                     class="delete"
                     onclick="removeContact(${i})"
                 >
@@ -192,7 +383,9 @@ function renderContacts() {
 
         list.innerHTML =
             '<p class="muted">No emergency contacts added yet.</p>';
+
     }
+
 
     updateSafetyScore();
 }
@@ -202,16 +395,20 @@ function removeContact(i) {
 
     const a = contacts();
 
+
     if (i < 0 || i >= a.length) {
         return;
     }
 
+
     a.splice(i, 1);
+
 
     localStorage.setItem(
         "motoresqContacts",
         JSON.stringify(a)
     );
+
 
     renderContacts();
 
@@ -221,51 +418,81 @@ function removeContact(i) {
 }
 
 
+/* =========================
+   ADD EMERGENCY CONTACT
+========================= */
+
 if ($("#contactForm")) {
 
-    $("#contactForm").onsubmit = function (e) {
+    $("#contactForm").addEventListener(
+        "submit",
+        function (e) {
 
-        e.preventDefault();
+            e.preventDefault();
 
-        const name = $("#contactName");
-        const phone = $("#contactPhone");
-        const relation = $("#contactRelation");
 
-        if (!name || !phone || !relation) {
-            toast("Contact fields not found");
-            return;
+            const name =
+                $("#contactName");
+
+            const phone =
+                $("#contactPhone");
+
+            const relation =
+                $("#contactRelation");
+
+
+            if (!name || !phone || !relation) {
+
+                toast("Contact fields not found");
+
+                return;
+            }
+
+
+            if (
+                !name.value.trim() ||
+                !phone.value.trim() ||
+                !relation.value.trim()
+            ) {
+
+                toast("Please fill all contact fields");
+
+                return;
+            }
+
+
+            const a = contacts();
+
+
+            a.push({
+
+                name: name.value.trim(),
+
+                phone: phone.value.trim(),
+
+                relation: relation.value.trim()
+
+            });
+
+
+            localStorage.setItem(
+                "motoresqContacts",
+                JSON.stringify(a)
+            );
+
+
+            e.target.reset();
+
+
+            renderContacts();
+
+            updateSafetyScore();
+
+
+            toast("✅ Emergency contact added");
+
         }
-
-        if (
-            !name.value.trim() ||
-            !phone.value.trim() ||
-            !relation.value.trim()
-        ) {
-            toast("Please fill all contact fields");
-            return;
-        }
-
-        const a = contacts();
-
-        a.push({
-            name: name.value.trim(),
-            phone: phone.value.trim(),
-            relation: relation.value.trim()
-        });
-
-        localStorage.setItem(
-            "motoresqContacts",
-            JSON.stringify(a)
-        );
-
-        e.target.reset();
-
-        renderContacts();
-
-        updateSafetyScore();
-
-        toast("Emergency contact added");
-    };
+    );
 }
 
 
@@ -293,9 +520,18 @@ function esc(s) {
 
 function history() {
 
-    return JSON.parse(
-        localStorage.getItem("motoresqHistory") || "[]"
-    );
+    try {
+
+        const data = JSON.parse(
+            localStorage.getItem("motoresqHistory") || "[]"
+        );
+
+        return Array.isArray(data) ? data : [];
+
+    } catch (error) {
+
+        return [];
+    }
 }
 
 
@@ -307,6 +543,7 @@ function renderHistory() {
 
     const a = history();
 
+
     if (a.length) {
 
         h.innerHTML = a.map(x => `
@@ -314,6 +551,7 @@ function renderHistory() {
             <div class="history-item">
 
                 <div>
+
                     <b>${esc(x.status)}</b>
 
                     <br>
@@ -321,7 +559,9 @@ function renderHistory() {
                     <small class="muted">
                         ${esc(x.time)}
                     </small>
+
                 </div>
+
 
                 <span class="muted">
                     ${esc(x.location)}
@@ -335,6 +575,7 @@ function renderHistory() {
 
         h.innerHTML =
             '<p class="muted">No alerts yet. Try "Simulate Accident" from the dashboard.</p>';
+
     }
 }
 
@@ -352,17 +593,25 @@ function simulateAccident() {
 
     if (!modal) return;
 
+
     modal.classList.remove("hidden");
+
 
     let time = 30;
 
-    const modalContent = $("#modalContent");
+
+    const modalContent =
+        $("#modalContent");
+
 
     if (!modalContent) return;
 
+
     modalContent.innerHTML = `
 
-        <div class="sos-icon">🚨</div>
+        <div class="sos-icon">
+            🚨
+        </div>
 
         <p class="eyebrow">
             POSSIBLE ACCIDENT DETECTED
@@ -389,23 +638,30 @@ function simulateAccident() {
 
     `;
 
+
     clearInterval(interval);
+
 
     interval = setInterval(() => {
 
         time--;
 
-        const timer = $("#timer");
+
+        const timer =
+            $("#timer");
+
 
         if (timer) {
             timer.textContent = time;
         }
+
 
         if (time <= 0) {
 
             clearInterval(interval);
 
             sendAlert();
+
         }
 
     }, 1000);
@@ -416,7 +672,10 @@ function closeModal() {
 
     clearInterval(interval);
 
-    const modal = $("#modal");
+
+    const modal =
+        $("#modal");
+
 
     if (modal) {
         modal.classList.add("hidden");
@@ -428,15 +687,22 @@ function cancelAlert() {
 
     clearInterval(interval);
 
+
     addHistory("Alert Cancelled");
+
 
     closeModal();
 
-    const safeText = $("#safeText");
+
+    const safeText =
+        $("#safeText");
+
 
     if (safeText) {
-        safeText.textContent = "YOU ARE SAFE";
+        safeText.textContent =
+            "YOU ARE SAFE";
     }
+
 
     toast("Alert cancelled");
 }
@@ -446,7 +712,10 @@ function sendAlert() {
 
     addHistory("SOS Alert Sent");
 
-    const modalContent = $("#modalContent");
+
+    const modalContent =
+        $("#modalContent");
+
 
     if (modalContent) {
 
@@ -480,10 +749,16 @@ function sendAlert() {
         `;
     }
 
-    const safeText = $("#safeText");
+
+    const safeText =
+        $("#safeText");
+
 
     if (safeText) {
-        safeText.textContent = "SOS DEMO COMPLETED";
+
+        safeText.textContent =
+            "SOS DEMO COMPLETED";
+
     }
 }
 
@@ -492,16 +767,24 @@ function addHistory(status) {
 
     const a = history();
 
+
     a.unshift({
+
         status: status,
+
         time: now(),
-        location: "Demo location • 26.8467° N, 80.9462° E"
+
+        location:
+            "Demo location • 26.8467° N, 80.9462° E"
+
     });
+
 
     localStorage.setItem(
         "motoresqHistory",
         JSON.stringify(a)
     );
+
 
     renderHistory();
 }
@@ -515,55 +798,41 @@ function clock() {
 
     const c = $("#clock");
 
+
     if (c) {
-        c.textContent = new Date().toLocaleString();
+
+        c.textContent =
+            new Date().toLocaleString();
+
     }
 }
+
 
 setInterval(clock, 1000);
 
 
 /* =========================
-   SAFETY SCORE SYSTEM
-=========================
-
-   Profile + Blood Group = 40 points
-   Emergency Contact       = 40 points
-   Vehicle Information     = 20 points
-
-   Maximum Score = 100
+   SAFETY SCORE
 ========================= */
+
+/*
+
+    Rider Profile       = 40 points
+    Emergency Contact   = 40 points
+    Vehicle Information = 20 points
+
+    Maximum = 100
+
+*/
 
 function updateSafetyScore() {
 
-    // Get saved profile
-    let profile = {};
-
-    try {
-
-        profile = JSON.parse(
-            localStorage.getItem("motoresqProfile") || "{}"
-        );
-
-    } catch (error) {
-
-        profile = {};
-    }
+    const profile =
+        getProfile();
 
 
-    // Get emergency contacts
-    let contactList = [];
-
-    try {
-
-        contactList = JSON.parse(
-            localStorage.getItem("motoresqContacts") || "[]"
-        );
-
-    } catch (error) {
-
-        contactList = [];
-    }
+    const contactList =
+        contacts();
 
 
     let score = 0;
@@ -576,6 +845,7 @@ function updateSafetyScore() {
     const profileCompleted =
         Boolean(
             profile.name &&
+            profile.phone &&
             profile.blood
         );
 
@@ -587,6 +857,7 @@ function updateSafetyScore() {
     if (profileCompleted) {
 
         score += 40;
+
 
         if (profileCheck) {
             profileCheck.textContent = "✅";
@@ -601,7 +872,7 @@ function updateSafetyScore() {
 
 
     /* =========================
-       EMERGENCY CONTACT CHECK
+       CONTACT CHECK
     ========================= */
 
     const contactAdded =
@@ -616,6 +887,7 @@ function updateSafetyScore() {
     if (contactAdded) {
 
         score += 40;
+
 
         if (contactCheck) {
             contactCheck.textContent = "✅";
@@ -645,6 +917,7 @@ function updateSafetyScore() {
 
         score += 20;
 
+
         if (vehicleCheck) {
             vehicleCheck.textContent = "✅";
         }
@@ -669,6 +942,7 @@ function updateSafetyScore() {
 
         scoreElement.textContent =
             score;
+
     }
 
 
@@ -685,10 +959,12 @@ function updateSafetyScore() {
         progressElement.style.width =
             score + "%";
 
+
         progressElement.setAttribute(
             "aria-valuenow",
             score
         );
+
     }
 
 
@@ -721,7 +997,9 @@ function updateSafetyScore() {
 
             scoreStatus.textContent =
                 "Complete your profile and emergency contacts to improve your score.";
+
         }
+
     }
 }
 
@@ -741,6 +1019,7 @@ function initializeApp() {
     renderHistory();
 
     updateSafetyScore();
+
 }
 
 
@@ -754,4 +1033,5 @@ if (document.readyState === "loading") {
 } else {
 
     initializeApp();
+
 }
