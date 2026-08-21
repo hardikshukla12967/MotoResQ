@@ -44,7 +44,138 @@
     </div>
 
 </div>
-<section id="profile" class="page"><div class="panel"><h2>Rider Profile</h2><p class="muted">Saved locally in this browser.</p><form id="profileForm" class="form"><label>Name<input id="name" placeholder="Your name"></label><label>Blood Group<input id="blood" placeholder="e.g. O+"></label><label>Medical Condition<input id="medical" placeholder="Optional"></label><label>Allergies<input id="allergies" placeholder="Optional"></label><label>Vehicle Number<input id="vehicle" placeholder="UP XX AB 1234"></label><button class="primary" type="submit">Save Profile</button></form></div></section>
+<section id="profile" class="page"><section id="profile" class="page">
+
+    <div class="panel">
+
+        <h2>👤 Rider Profile</h2>
+
+        <p class="muted">
+            Enter your details. This information will be used during an emergency.
+        </p>
+
+        <form id="profileForm">
+
+            <!-- NAME -->
+            <div class="form-group">
+                <label for="riderName">Full Name</label>
+
+                <input
+                    type="text"
+                    id="riderName"
+                    placeholder="Enter your full name"
+                    required
+                >
+            </div>
+
+
+            <!-- PHONE -->
+            <div class="form-group">
+                <label for="riderPhone">Phone Number</label>
+
+                <input
+                    type="tel"
+                    id="riderPhone"
+                    placeholder="Enter your phone number"
+                    required
+                >
+            </div>
+
+
+            <!-- BLOOD GROUP -->
+            <div class="form-group">
+                <label for="bloodGroup">Blood Group</label>
+
+                <select id="bloodGroup" required>
+
+                    <option value="">Select Blood Group</option>
+
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+
+                </select>
+            </div>
+
+
+            <!-- MEDICAL CONDITION -->
+            <div class="form-group">
+
+                <label for="medicalCondition">
+                    Medical Conditions
+                </label>
+
+                <textarea
+                    id="medicalCondition"
+                    placeholder="Example: Diabetes, Asthma (optional)"
+                ></textarea>
+
+            </div>
+
+
+            <!-- ALLERGIES -->
+            <div class="form-group">
+
+                <label for="allergies">
+                    Allergies
+                </label>
+
+                <textarea
+                    id="allergies"
+                    placeholder="Example: Penicillin, Peanuts (optional)"
+                ></textarea>
+
+            </div>
+
+
+            <!-- VEHICLE NUMBER -->
+            <div class="form-group">
+
+                <label for="vehicleNumber">
+                    Vehicle Number
+                </label>
+
+                <input
+                    type="text"
+                    id="vehicleNumber"
+                    placeholder="Example: UP32 AB 1234"
+                    required
+                >
+
+            </div>
+
+
+            <!-- ADDRESS -->
+            <div class="form-group">
+
+                <label for="riderAddress">
+                    Address
+                </label>
+
+                <textarea
+                    id="riderAddress"
+                    placeholder="Enter your address"
+                ></textarea>
+
+            </div>
+
+
+            <button type="submit" class="btn primary">
+
+                💾 Save Profile
+
+            </button>
+
+        </form>
+
+    </div>
+
+</section></section>
 <section id="contacts" class="page"><div class="panel"><div class="panel-head"><div><h2>Emergency Contacts</h2><p class="muted">People to notify during an SOS event.</p></div></div><form id="contactForm" class="contact-form"><input id="contactName" placeholder="Name" required><input id="contactPhone" placeholder="Phone number" required><input id="contactRelation" placeholder="Relationship" required><button class="primary">Add Contact</button></form><div id="contactList" class="contact-list"></div></div></section>
 <section id="location" class="page"><div class="panel"><h2>Demo Location</h2><div class="map-demo"><div class="pin">📍</div><div class="road r1"></div><div class="road r2"></div><div class="map-label">MotoResQ Demo Location</div></div><div class="location-data"><div><span>Latitude</span><b>26.8467° N</b></div><div><span>Longitude</span><b>80.9462° E</b></div><div><span>Confidence</span><b>Demo / Prototype</b></div></div></div></section>
 <section id="history" class="page"><div class="panel"><h2>Alert History</h2><div id="historyList"></div></div></section>
