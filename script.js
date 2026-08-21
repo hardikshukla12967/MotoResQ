@@ -1,6 +1,7 @@
 const $ = s => document.querySelector(s);
 const $$ = s => document.querySelectorAll(s);
 
+
 /* =========================
    BASIC FUNCTIONS
 ========================= */
@@ -15,6 +16,7 @@ function now() {
 
 function toast(t) {
     const x = $("#toast");
+
     if (!x) return;
 
     x.textContent = t;
@@ -32,16 +34,19 @@ function toast(t) {
 
 function showPage(id) {
 
+    // Remove active class from all pages
     $$(".page").forEach(p => {
         p.classList.remove("active-page");
     });
 
+    // Activate selected page
     const page = $("#" + id);
 
     if (page) {
         page.classList.add("active-page");
     }
 
+    // Update active tab
     $$(".tab").forEach(t => {
         t.classList.toggle(
             "active",
@@ -49,10 +54,11 @@ function showPage(id) {
         );
     });
 
-    const title = $("#pageTitle");
+    // Update page title
+    const pageTitle = $("#pageTitle");
 
-    if (title) {
-        title.textContent =
+    if (pageTitle) {
+        pageTitle.textContent =
             id === "dashboard"
                 ? "Dashboard"
                 : id.replace(/^./, c => c.toUpperCase());
@@ -60,10 +66,7 @@ function showPage(id) {
 }
 
 
-/* =========================
-   TAB CLICK
-========================= */
-
+// Tab click events
 $$(".tab").forEach(t => {
     t.onclick = () => {
         showPage(t.dataset.page);
@@ -77,7 +80,7 @@ $$(".tab").forEach(t => {
 
 function loadProfile() {
 
-    let p = JSON.parse(
+    const p = JSON.parse(
         localStorage.getItem("motoresqProfile") || "{}"
     );
 
@@ -96,20 +99,18 @@ function loadProfile() {
         }
 
     });
+
+    updateSafetyScore();
 }
 
 
-/* =========================
-   SAVE PROFILE
-========================= */
-
 if ($("#profileForm")) {
 
-    $("#profileForm").onsubmit = e => {
+    $("#profileForm").onsubmit = function (e) {
 
         e.preventDefault();
 
-        let p = {};
+        const p = {};
 
         [
             "name",
@@ -132,7 +133,6 @@ if ($("#profileForm")) {
             JSON.stringify(p)
         );
 
-        // Update safety score immediately
         updateSafetyScore();
 
         toast("Profile saved locally");
@@ -151,10 +151,6 @@ function contacts() {
     );
 }
 
-
-/* =========================
-   RENDER CONTACTS
-========================= */
 
 function renderContacts() {
 
@@ -194,17 +190,87 @@ function renderContacts() {
 
     } else {
 
-        list.innerHTML = `
-            <p class="muted">
-                No emergency contacts added yet.
-            </p>
-        `;
+        list.innerHTML =
+            '<p class="muted">No emergency contacts added yet.</p>';
     }
+
+    updateSafetyScore();
+}
+
+
+function removeContact(i) {
+
+    const a = contacts();
+
+    if (i < 0 || i >= a.length) {
+        return;
+    }
+
+    a.splice(i, 1);
+
+    localStorage.setItem(
+        "motoresqContacts",
+        JSON.stringify(a)
+    );
+
+    renderContacts();
+
+    updateSafetyScore();
+
+    toast("Contact removed");
+}
+
+
+if ($("#contactForm")) {
+
+    $("#contactForm").onsubmit = function (e) {
+
+        e.preventDefault();
+
+        const name = $("#contactName");
+        const phone = $("#contactPhone");
+        const relation = $("#contactRelation");
+
+        if (!name || !phone || !relation) {
+            toast("Contact fields not found");
+            return;
+        }
+
+        if (
+            !name.value.trim() ||
+            !phone.value.trim() ||
+            !relation.value.trim()
+        ) {
+            toast("Please fill all contact fields");
+            return;
+        }
+
+        const a = contacts();
+
+        a.push({
+            name: name.value.trim(),
+            phone: phone.value.trim(),
+            relation: relation.value.trim()
+        });
+
+        localStorage.setItem(
+            "motoresqContacts",
+            JSON.stringify(a)
+        );
+
+        e.target.reset();
+
+        renderContacts();
+
+        updateSafetyScore();
+
+        toast("Emergency contact added");
+    };
 }
 
 
 /* =========================
-   ESCAPE HTML
+   HTML ESCAPE
 ========================= */
 
 function esc(s) {
@@ -222,75 +288,6 @@ function esc(s) {
 
 
 /* =========================
-   REMOVE CONTACT
-========================= */
-
-function removeContact(i) {
-
-    let a = contacts();
-
-    a.splice(i, 1);
-
-    localStorage.setItem(
-        "motoresqContacts",
-        JSON.stringify(a)
-    );
-
-    renderContacts();
-
-    // Update safety score immediately
-    updateSafetyScore();
-
-    toast("Contact removed");
-}
-
-
-/* =========================
-   ADD CONTACT
-========================= */
-
-if ($("#contactForm")) {
-
-    $("#contactForm").onsubmit = e => {
-
-        e.preventDefault();
-
-        let a = contacts();
-
-        const name = $("#contactName");
-        const phone = $("#contactPhone");
-        const relation = $("#contactRelation");
-
-        a.push({
-
-            name: name ? name.value.trim() : "",
-
-            phone: phone ? phone.value.trim() : "",
-
-            relation: relation
-                ? relation.value.trim()
-                : ""
-
-        });
-
-        localStorage.setItem(
-            "motoresqContacts",
-            JSON.stringify(a)
-        );
-
-        e.target.reset();
-
-        renderContacts();
-
-        // Update safety score immediately
-        updateSafetyScore();
-
-        toast("Emergency contact added");
-    };
-}
-
-
-/* =========================
    ACCIDENT HISTORY
 ========================= */
 
@@ -301,10 +298,6 @@ function history() {
     );
 }
 
-
-/* =========================
-   RENDER HISTORY
-========================= */
 
 function renderHistory() {
 
@@ -340,12 +333,8 @@ function renderHistory() {
 
     } else {
 
-        h.innerHTML = `
-            <p class="muted">
-                No alerts yet. Try "Simulate Accident"
-                from the dashboard.
-            </p>
-        `;
+        h.innerHTML =
+            '<p class="muted">No alerts yet. Try "Simulate Accident" from the dashboard.</p>';
     }
 }
 
@@ -355,6 +344,7 @@ function renderHistory() {
 ========================= */
 
 let interval = null;
+
 
 function simulateAccident() {
 
@@ -366,11 +356,11 @@ function simulateAccident() {
 
     let time = 30;
 
-    const content = $("#modalContent");
+    const modalContent = $("#modalContent");
 
-    if (!content) return;
+    if (!modalContent) return;
 
-    content.innerHTML = `
+    modalContent.innerHTML = `
 
         <div class="sos-icon">🚨</div>
 
@@ -383,8 +373,7 @@ function simulateAccident() {
         </h2>
 
         <p class="muted">
-            Demo countdown. Cancel to stop
-            the simulated alert.
+            Demo countdown. Cancel to stop the simulated alert.
         </p>
 
         <div class="timer" id="timer">
@@ -423,10 +412,6 @@ function simulateAccident() {
 }
 
 
-/* =========================
-   CLOSE MODAL
-========================= */
-
 function closeModal() {
 
     clearInterval(interval);
@@ -438,10 +423,6 @@ function closeModal() {
     }
 }
 
-
-/* =========================
-   CANCEL ALERT
-========================= */
 
 function cancelAlert() {
 
@@ -461,19 +442,15 @@ function cancelAlert() {
 }
 
 
-/* =========================
-   SEND DEMO ALERT
-========================= */
-
 function sendAlert() {
 
     addHistory("SOS Alert Sent");
 
-    const content = $("#modalContent");
+    const modalContent = $("#modalContent");
 
-    if (content) {
+    if (modalContent) {
 
-        content.innerHTML = `
+        modalContent.innerHTML = `
 
             <div class="sos-icon">
                 📡
@@ -489,8 +466,8 @@ function sendAlert() {
 
             <p class="muted">
                 In Phase 1, no real SMS or call is sent.
-                A future backend/hardware phase would
-                handle emergency delivery.
+                A future backend/hardware phase would handle
+                emergency delivery.
             </p>
 
             <button
@@ -511,23 +488,14 @@ function sendAlert() {
 }
 
 
-/* =========================
-   ADD HISTORY
-========================= */
-
 function addHistory(status) {
 
-    let a = history();
+    const a = history();
 
     a.unshift({
-
         status: status,
-
         time: now(),
-
-        location:
-            "Demo location • 26.8467° N, 80.9462° E"
-
+        location: "Demo location • 26.8467° N, 80.9462° E"
     });
 
     localStorage.setItem(
@@ -554,44 +522,56 @@ function clock() {
 
 setInterval(clock, 1000);
 
-clock();
 
-
-/* =====================================================
+/* =========================
    SAFETY SCORE SYSTEM
-===================================================== */
+=========================
+
+   Profile + Blood Group = 40 points
+   Emergency Contact       = 40 points
+   Vehicle Information     = 20 points
+
+   Maximum Score = 100
+========================= */
 
 function updateSafetyScore() {
 
-    /* -------------------------
-       GET PROFILE
-    ------------------------- */
+    // Get saved profile
+    let profile = {};
 
-    const profile = JSON.parse(
-        localStorage.getItem("motoresqProfile") || "{}"
-    );
+    try {
 
+        profile = JSON.parse(
+            localStorage.getItem("motoresqProfile") || "{}"
+        );
 
-    /* -------------------------
-       GET CONTACTS
-    ------------------------- */
+    } catch (error) {
 
-    const emergencyContacts = JSON.parse(
-        localStorage.getItem("motoresqContacts") || "[]"
-    );
+        profile = {};
+    }
 
 
-    /* -------------------------
-       INITIAL SCORE
-    ------------------------- */
+    // Get emergency contacts
+    let contactList = [];
+
+    try {
+
+        contactList = JSON.parse(
+            localStorage.getItem("motoresqContacts") || "[]"
+        );
+
+    } catch (error) {
+
+        contactList = [];
+    }
+
 
     let score = 0;
 
 
-    /* =================================================
+    /* =========================
        PROFILE CHECK
-       Name + Blood Group = 40 points
-    ================================================= */
+    ========================= */
 
     const profileCompleted =
         Boolean(
@@ -620,13 +600,13 @@ function updateSafetyScore() {
     }
 
 
-    /* =================================================
+    /* =========================
        EMERGENCY CONTACT CHECK
-       At least 1 contact = 40 points
-    ================================================= */
+    ========================= */
 
     const contactAdded =
-        emergencyContacts.length > 0;
+        Array.isArray(contactList) &&
+        contactList.length > 0;
 
 
     const contactCheck =
@@ -649,10 +629,9 @@ function updateSafetyScore() {
     }
 
 
-    /* =================================================
+    /* =========================
        VEHICLE CHECK
-       Vehicle details = 20 points
-    ================================================= */
+    ========================= */
 
     const vehicleAdded =
         Boolean(profile.vehicle);
@@ -678,9 +657,9 @@ function updateSafetyScore() {
     }
 
 
-    /* =================================================
-       UPDATE SCORE NUMBER
-    ================================================= */
+    /* =========================
+       SCORE NUMBER
+    ========================= */
 
     const scoreElement =
         $("#safetyScore");
@@ -693,9 +672,9 @@ function updateSafetyScore() {
     }
 
 
-    /* =================================================
-       UPDATE PROGRESS BAR
-    ================================================= */
+    /* =========================
+       PROGRESS BAR
+    ========================= */
 
     const progressElement =
         $("#safetyProgress");
@@ -713,61 +692,66 @@ function updateSafetyScore() {
     }
 
 
-    /* =================================================
-       UPDATE SAFETY STATUS
-    ================================================= */
+    /* =========================
+       SCORE STATUS
+    ========================= */
 
-    const statusElement =
+    const scoreStatus =
         $("#safetyStatus");
 
 
-    if (statusElement) {
+    if (scoreStatus) {
 
         if (score === 100) {
 
-            statusElement.textContent =
-                "Excellent Safety Setup";
+            scoreStatus.textContent =
+                "Excellent — your safety profile is complete.";
 
         } else if (score >= 80) {
 
-            statusElement.textContent =
-                "Very Good Safety Setup";
-
-        } else if (score >= 60) {
-
-            statusElement.textContent =
-                "Good Safety Setup";
+            scoreStatus.textContent =
+                "Very good — complete your remaining safety information.";
 
         } else if (score >= 40) {
 
-            statusElement.textContent =
-                "Basic Safety Setup";
+            scoreStatus.textContent =
+                "Good start — add the remaining safety information.";
 
         } else {
 
-            statusElement.textContent =
-                "Safety Setup Incomplete";
+            scoreStatus.textContent =
+                "Complete your profile and emergency contacts to improve your score.";
         }
     }
 }
 
 
-/* =====================================================
-   INITIALIZE APPLICATION
-===================================================== */
+/* =========================
+   INITIALIZE APP
+========================= */
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
+function initializeApp() {
 
-        loadProfile();
+    clock();
 
-        renderContacts();
+    loadProfile();
 
-        renderHistory();
+    renderContacts();
 
-        updateSafetyScore();
+    renderHistory();
 
-        clock();
-    }
-);
+    updateSafetyScore();
+}
+
+
+if (document.readyState === "loading") {
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        initializeApp
+    );
+
+} else {
+
+    initializeApp();
+}
