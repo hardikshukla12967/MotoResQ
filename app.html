@@ -1,686 +1,1109 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+```
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <title>MotoResQ Dashboard</title>
+<meta
+    name="description"
+    content="MotoResQ Rider Safety and Emergency Response Dashboard"
+>
 
-    <link rel="stylesheet" href="style.css">
+<title>MotoResQ Dashboard</title>
+
+<link
+    rel="stylesheet"
+    href="style.css"
+>
+```
+
 </head>
-
 
 <body class="app-body">
 
-    <!-- SIDEBAR -->
-    <aside>
+```
+<!-- =====================================================
+     SIDEBAR
+====================================================== -->
 
-        <a class="brand" href="index.html">
-            ⚡ Moto<span>ResQ</span>
-        </a>
+<aside>
 
-        <button class="tab active" data-page="dashboard">
-            ⌂ Dashboard
-        </button>
+    <a
+        class="brand"
+        href="index.html"
+    >
+        ⚡ Moto<span>ResQ</span>
+    </a>
 
-        <button class="tab" data-page="profile">
-            ◉ Rider Profile
-        </button>
 
-        <button class="tab" data-page="contacts">
-            ☎ Emergency Contacts
-        </button>
+    <button
+        type="button"
+        class="tab active"
+        data-page="dashboard"
+    >
+        ⌂ Dashboard
+    </button>
 
-        <button class="tab" data-page="location">
-            ⌖ Live Location
-        </button>
 
-        <button class="tab" data-page="history">
-            ◷ Alert History
-        </button>
+    <button
+        type="button"
+        class="tab"
+        data-page="profile"
+    >
+        ◉ Rider Profile
+    </button>
 
-        <div class="side-bottom">
-            PHASE 1
-            <br>
-            <small>Frontend prototype</small>
+
+    <button
+        type="button"
+        class="tab"
+        data-page="contacts"
+    >
+        ☎ Emergency Contacts
+    </button>
+
+
+    <button
+        type="button"
+        class="tab"
+        data-page="location"
+    >
+        ⌖ Live Location
+    </button>
+
+
+    <button
+        type="button"
+        class="tab"
+        data-page="history"
+    >
+        ◷ Alert History
+    </button>
+
+
+    <div class="side-bottom">
+
+        PHASE 1
+
+        <br>
+
+        <small>
+            Frontend Prototype
+        </small>
+
+    </div>
+
+</aside>
+
+
+
+<!-- =====================================================
+     MAIN APPLICATION
+====================================================== -->
+
+<div class="app">
+
+
+    <!-- =================================================
+         HEADER
+    ================================================== -->
+
+    <header>
+
+        <div>
+
+            <p class="eyebrow">
+                MOTORESQ COMMAND CENTER
+            </p>
+
+
+            <h1 id="pageTitle">
+                Dashboard
+            </h1>
+
         </div>
 
-    </aside>
+
+        <div
+            class="clock"
+            id="clock"
+        ></div>
+
+    </header>
 
 
-    <!-- MAIN APPLICATION -->
-    <div class="app">
+
+    <!-- =================================================
+         DASHBOARD
+    ================================================== -->
+
+    <section
+        id="dashboard"
+        class="page active-page"
+    >
 
 
-        <!-- HEADER -->
-        <header>
+        <!-- STATUS CARDS -->
 
-            <div>
+        <div class="grid3">
 
-                <p class="eyebrow">
-                    MOTORESQ COMMAND CENTER
+
+            <!-- LIVE STATUS -->
+
+            <div class="status-card safe">
+
+                <span>
+                    ● LIVE STATUS
+                </span>
+
+
+                <h2 id="safeText">
+                    YOU ARE SAFE
+                </h2>
+
+
+                <p>
+                    MotoResQ monitoring prototype active
                 </p>
 
-                <h1 id="pageTitle">
-                    Dashboard
-                </h1>
+            </div>
+
+
+
+            <!-- DEVICE -->
+
+            <div class="status-card">
+
+                <span>
+                    DEVICE
+                </span>
+
+
+                <h2>
+                    Connected
+                </h2>
+
+
+                <p>
+                    Demo device • MOTO-001
+                </p>
 
             </div>
 
 
-            <div class="clock" id="clock"></div>
 
-        </header>
+            <!-- LAST UPDATE -->
 
+            <div class="status-card">
 
-        <!-- =========================
-             DASHBOARD
-        ========================== -->
-
-        <section id="dashboard" class="page active-page">
+                <span>
+                    LAST UPDATE
+                </span>
 
 
-            <!-- STATUS CARDS -->
-
-            <div class="grid3">
-
-                <div class="status-card safe">
-
-                    <span>● LIVE STATUS</span>
-
-                    <h2 id="safeText">
-                        YOU ARE SAFE
-                    </h2>
-
-                    <p>
-                        Monitoring prototype active
-                    </p>
-
-                </div>
+                <h2 id="lastUpdate">
+                    Just now
+                </h2>
 
 
-                <div class="status-card">
-
-                    <span>DEVICE</span>
-
-                    <h2>
-                        Connected
-                    </h2>
-
-                    <p>
-                        Demo device • MOTO-001
-                    </p>
-
-                </div>
-
-
-                <div class="status-card">
-
-                    <span>LAST UPDATE</span>
-
-                    <h2 id="lastUpdate">
-                        Just now
-                    </h2>
-
-                    <p>
-                        Browser simulation
-                    </p>
-
-                </div>
+                <p>
+                    Browser simulation
+                </p>
 
             </div>
 
+        </div>
 
-            <!-- QUICK ACTIONS -->
 
-            <div class="panel">
 
-                <div class="panel-head">
+        <!-- =================================================
+             QUICK ACTIONS
+        ================================================== -->
+
+        <div class="panel">
+
+            <div class="panel-head">
+
+                <div>
 
                     <h2>
                         Quick Actions
                     </h2>
 
-                </div>
-
-
-                <div class="actions">
-
-                    <button
-                        class="danger"
-                        onclick="simulateAccident()"
-                    >
-                        🚨 Simulate Accident
-                    </button>
-
-
-                    <button
-                        class="secondary-btn"
-                        onclick="showPage('location')"
-                    >
-                        ⌖ View Demo Location
-                    </button>
+                    <p class="muted">
+                        Test MotoResQ emergency response features.
+                    </p>
 
                 </div>
 
             </div>
 
 
-            <!-- =========================
-                 SAFETY SCORE
-            ========================== -->
-
-            <div class="panel safety-panel">
+            <div class="actions">
 
 
-                <div class="section-header">
-
-                    <div>
-
-                        <h2>
-                            🛡️ Safety Score
-                        </h2>
-
-                        <p>
-                            Complete your safety profile to improve your score.
-                        </p>
-
-                    </div>
+                <button
+                    type="button"
+                    class="danger"
+                    onclick="simulateAccident()"
+                >
+                    🚨 Simulate Accident
+                </button>
 
 
-                    <div class="score-number">
-
-                        <span id="safetyScore">
-                            0
-                        </span>/100
-
-                    </div>
-
-                </div>
+                <button
+                    type="button"
+                    class="secondary-btn"
+                    onclick="showPage('location')"
+                >
+                    ⌖ View Demo Location
+                </button>
 
 
-                <!-- PROGRESS BAR -->
-
-                <div class="progress-bar">
-
-                    <div
-                        id="safetyProgress"
-                        class="progress-fill"
-                    ></div>
-
-                </div>
-
-
-                <!-- SAFETY CHECKS -->
-
-                <div class="safety-checks">
-
-
-                    <div class="safety-item">
-
-                        <span id="profileCheck">
-                            ❌
-                        </span>
-
-                        <span>
-                            Rider profile completed
-                        </span>
-
-                        <b>
-                            +40
-                        </b>
-
-                    </div>
-
-
-                    <div class="safety-item">
-
-                        <span id="contactCheck">
-                            ❌
-                        </span>
-
-                        <span>
-                            Emergency contact added
-                        </span>
-
-                        <b>
-                            +40
-                        </b>
-
-                    </div>
-
-
-                    <div class="safety-item">
-
-                        <span id="vehicleCheck">
-                            ❌
-                        </span>
-
-                        <span>
-                            Vehicle information added
-                        </span>
-
-                        <b>
-                            +20
-                        </b>
-
-                    </div>
-
-
-                </div>
-
-            </div>
-
-
-        </section>
-
-
-        <!-- =========================
-             RIDER PROFILE
-        ========================== -->
-
-        <section id="profile" class="page">
-
-
-            <div class="panel">
-
-
-                <h2>
+                <button
+                    type="button"
+                    class="secondary-btn"
+                    onclick="showPage('profile')"
+                >
                     👤 Rider Profile
-                </h2>
+                </button>
+
+            </div>
+
+        </div>
 
 
-                <p class="muted">
 
-                    Enter your details. This information will be used
-                    during an emergency.
+        <!-- =================================================
+             SAFETY SCORE
+        ================================================== -->
 
-                </p>
-
-
-                <form id="profileForm">
+        <div class="panel safety-panel">
 
 
-                    <!-- FULL NAME -->
-
-                    <div class="form-group">
-
-                        <label for="riderName">
-                            Full Name
-                        </label>
-
-                        <input
-                            type="text"
-                            id="riderName"
-                            placeholder="Enter your full name"
-                            required
-                        >
-
-                    </div>
+            <div class="section-header">
 
 
-                    <!-- PHONE NUMBER -->
+                <div>
 
-                    <div class="form-group">
-
-                        <label for="riderPhone">
-                            Phone Number
-                        </label>
-
-                        <input
-                            type="tel"
-                            id="riderPhone"
-                            placeholder="Enter your phone number"
-                            required
-                        >
-
-                    </div>
+                    <h2>
+                        🛡️ Safety Score
+                    </h2>
 
 
-                    <!-- BLOOD GROUP -->
+                    <p>
+                        Complete your safety profile to improve
+                        your emergency readiness.
+                    </p>
 
-                    <div class="form-group">
-
-                        <label for="bloodGroup">
-                            Blood Group
-                        </label>
-
-
-                        <select
-                            id="bloodGroup"
-                            required
-                        >
-
-                            <option value="">
-                                Select Blood Group
-                            </option>
-
-                            <option value="A+">A+</option>
-                            <option value="A-">A-</option>
-
-                            <option value="B+">B+</option>
-                            <option value="B-">B-</option>
-
-                            <option value="AB+">AB+</option>
-                            <option value="AB-">AB-</option>
-
-                            <option value="O+">O+</option>
-                            <option value="O-">O-</option>
-
-                        </select>
-
-                    </div>
+                </div>
 
 
-                    <!-- MEDICAL CONDITIONS -->
+                <div class="score-number">
 
-                    <div class="form-group">
+                    <span id="safetyScore">
+                        0
+                    </span>
 
-                        <label for="medicalCondition">
-                            Medical Conditions
-                        </label>
+                    /100
 
+                </div>
 
-                        <textarea
-                            id="medicalCondition"
-                            placeholder="Example: Diabetes, Asthma (optional)"
-                        ></textarea>
-
-                    </div>
+            </div>
 
 
-                    <!-- ALLERGIES -->
 
-                    <div class="form-group">
+            <!-- PROGRESS BAR -->
 
-                        <label for="allergies">
-                            Allergies
-                        </label>
+            <div
+                class="progress-bar"
+                role="progressbar"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="0"
+            >
 
+                <div
+                    id="safetyProgress"
+                    class="progress-fill"
+                ></div>
 
-                        <textarea
-                            id="allergies"
-                            placeholder="Example: Penicillin, Peanuts (optional)"
-                        ></textarea>
-
-                    </div>
-
-
-                    <!-- VEHICLE NUMBER -->
-
-                    <div class="form-group">
-
-                        <label for="vehicleNumber">
-                            Vehicle Number
-                        </label>
+            </div>
 
 
-                        <input
-                            type="text"
-                            id="vehicleNumber"
-                            placeholder="Example: UP32 AB 1234"
-                            required
-                        >
 
-                    </div>
+            <!-- SCORE STATUS -->
 
-
-                    <!-- ADDRESS -->
-
-                    <div class="form-group">
-
-                        <label for="riderAddress">
-                            Address
-                        </label>
+            <p
+                id="safetyStatus"
+                class="muted"
+            >
+                Complete your profile and emergency contacts
+                to improve your score.
+            </p>
 
 
-                        <textarea
-                            id="riderAddress"
-                            placeholder="Enter your address"
-                        ></textarea>
 
-                    </div>
+            <!-- SAFETY CHECKS -->
+
+            <div class="safety-checks">
 
 
-                    <!-- SAVE BUTTON -->
+                <!-- PROFILE -->
+
+                <div class="safety-item">
+
+                    <span id="profileCheck">
+                        ❌
+                    </span>
+
+
+                    <span>
+                        Rider profile completed
+                    </span>
+
+
+                    <b>
+                        +40
+                    </b>
+
+                </div>
+
+
+
+                <!-- CONTACT -->
+
+                <div class="safety-item">
+
+                    <span id="contactCheck">
+                        ❌
+                    </span>
+
+
+                    <span>
+                        Emergency contact added
+                    </span>
+
+
+                    <b>
+                        +40
+                    </b>
+
+                </div>
+
+
+
+                <!-- VEHICLE -->
+
+                <div class="safety-item">
+
+                    <span id="vehicleCheck">
+                        ❌
+                    </span>
+
+
+                    <span>
+                        Vehicle information added
+                    </span>
+
+
+                    <b>
+                        +20
+                    </b>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         RIDER PROFILE
+    ================================================== -->
+
+    <section
+        id="profile"
+        class="page"
+    >
+
+
+        <div class="panel profile-panel">
+
+
+            <!-- PROFILE HEADER -->
+
+            <div class="panel-head">
+
+
+                <div>
+
+                    <p class="eyebrow">
+                        RIDER INFORMATION
+                    </p>
+
+
+                    <h2>
+                        👤 Rider Profile
+                    </h2>
+
+
+                    <p class="muted">
+                        Keep your rider and vehicle information
+                        updated for emergency response.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- LOCAL STORAGE NOTICE -->
+
+            <div class="profile-status">
+
+                🔒
+                <strong>
+                    Privacy Notice:
+                </strong>
+
+                Your profile is saved locally on this device
+                in this Phase 1 prototype.
+
+            </div>
+
+
+
+            <!-- PROFILE FORM -->
+
+            <form
+                id="profileForm"
+            >
+
+
+                <!-- ===============================
+                     PERSONAL INFORMATION
+                ================================ -->
+
+                <div class="form-section">
+
+                    <h3>
+                        Personal Information
+                    </h3>
+
+
+                    <p class="muted">
+                        Basic information used to identify
+                        the rider during an emergency.
+                    </p>
+
+                </div>
+
+
+
+                <!-- FULL NAME -->
+
+                <div class="form-group">
+
+                    <label for="riderName">
+                        Full Name
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="riderName"
+                        name="riderName"
+                        placeholder="Enter your full name"
+                        autocomplete="name"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- PHONE -->
+
+                <div class="form-group">
+
+                    <label for="riderPhone">
+                        Phone Number
+                    </label>
+
+
+                    <input
+                        type="tel"
+                        id="riderPhone"
+                        name="riderPhone"
+                        placeholder="Enter your 10-digit mobile number"
+                        autocomplete="tel"
+                        inputmode="tel"
+                        required
+                    >
+
+
+                    <small class="field-help">
+                        Example: 9876543210
+                    </small>
+
+                </div>
+
+
+
+                <!-- BLOOD GROUP -->
+
+                <div class="form-group">
+
+                    <label for="bloodGroup">
+                        Blood Group
+                    </label>
+
+
+                    <select
+                        id="bloodGroup"
+                        name="bloodGroup"
+                        required
+                    >
+
+                        <option value="">
+                            Select Blood Group
+                        </option>
+
+
+                        <option value="A+">
+                            A+
+                        </option>
+
+
+                        <option value="A-">
+                            A-
+                        </option>
+
+
+                        <option value="B+">
+                            B+
+                        </option>
+
+
+                        <option value="B-">
+                            B-
+                        </option>
+
+
+                        <option value="AB+">
+                            AB+
+                        </option>
+
+
+                        <option value="AB-">
+                            AB-
+                        </option>
+
+
+                        <option value="O+">
+                            O+
+                        </option>
+
+
+                        <option value="O-">
+                            O-
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- ===============================
+                     MEDICAL INFORMATION
+                ================================ -->
+
+                <div class="form-section">
+
+                    <h3>
+                        Medical Information
+                    </h3>
+
+
+                    <p class="muted">
+                        Optional information that may help
+                        emergency responders.
+                    </p>
+
+                </div>
+
+
+
+                <!-- MEDICAL CONDITIONS -->
+
+                <div class="form-group">
+
+                    <label for="medicalCondition">
+                        Medical Conditions
+                    </label>
+
+
+                    <textarea
+                        id="medicalCondition"
+                        name="medicalCondition"
+                        placeholder="Example: Diabetes, Asthma (optional)"
+                        rows="4"
+                    ></textarea>
+
+                </div>
+
+
+
+                <!-- ALLERGIES -->
+
+                <div class="form-group">
+
+                    <label for="allergies">
+                        Allergies
+                    </label>
+
+
+                    <textarea
+                        id="allergies"
+                        name="allergies"
+                        placeholder="Example: Penicillin, Peanuts (optional)"
+                        rows="4"
+                    ></textarea>
+
+                </div>
+
+
+
+                <!-- ===============================
+                     VEHICLE INFORMATION
+                ================================ -->
+
+                <div class="form-section">
+
+                    <h3>
+                        🏍️ Vehicle Information
+                    </h3>
+
+
+                    <p class="muted">
+                        Vehicle information can help identify
+                        the rider during an emergency.
+                    </p>
+
+                </div>
+
+
+
+                <!-- VEHICLE NUMBER -->
+
+                <div class="form-group">
+
+                    <label for="vehicleNumber">
+                        Vehicle Registration Number
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="vehicleNumber"
+                        name="vehicleNumber"
+                        placeholder="Example: UP32 AB 1234"
+                        autocomplete="off"
+                        required
+                    >
+
+
+                    <small class="field-help">
+                        Your registration number will be
+                        converted to uppercase automatically.
+                    </small>
+
+                </div>
+
+
+
+                <!-- ===============================
+                     ADDRESS
+                ================================ -->
+
+                <div class="form-section">
+
+                    <h3>
+                        🏠 Address
+                    </h3>
+
+
+                    <p class="muted">
+                        Optional address information for
+                        emergency identification.
+                    </p>
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label for="riderAddress">
+                        Address
+                    </label>
+
+
+                    <textarea
+                        id="riderAddress"
+                        name="riderAddress"
+                        placeholder="Enter your address"
+                        rows="5"
+                        autocomplete="street-address"
+                    ></textarea>
+
+                </div>
+
+
+
+                <!-- ===============================
+                     SAVE PROFILE
+                ================================ -->
+
+                <div class="profile-actions">
 
                     <button
                         type="submit"
                         class="btn primary"
                     >
-
                         💾 Save Profile
-
                     </button>
 
 
-                </form>
-
-
-            </div>
-
-
-        </section>
-
-
-        <!-- =========================
-             EMERGENCY CONTACTS
-        ========================== -->
-
-        <section id="contacts" class="page">
-
-
-            <div class="panel">
-
-
-                <div class="panel-head">
-
-                    <div>
-
-                        <h2>
-                            Emergency Contacts
-                        </h2>
-
-                        <p class="muted">
-                            People to notify during an SOS event.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <form
-                    id="contactForm"
-                    class="contact-form"
-                >
-
-
-                    <input
-                        id="contactName"
-                        placeholder="Name"
-                        required
+                    <button
+                        type="button"
+                        class="secondary-btn"
+                        onclick="showPage('dashboard')"
                     >
-
-
-                    <input
-                        id="contactPhone"
-                        placeholder="Phone number"
-                        required
-                    >
-
-
-                    <input
-                        id="contactRelation"
-                        placeholder="Relationship"
-                        required
-                    >
-
-
-                    <button class="primary">
-
-                        Add Contact
-
+                        ← Back to Dashboard
                     </button>
 
-
-                </form>
-
-
-                <div
-                    id="contactList"
-                    class="contact-list"
-                ></div>
-
-
-            </div>
-
-
-        </section>
-
-
-        <!-- =========================
-             LIVE LOCATION
-        ========================== -->
-
-        <section id="location" class="page">
-
-
-            <div class="panel">
-
-
-                <h2>
-                    Demo Location
-                </h2>
-
-
-                <div class="map-demo">
-
-                    <div class="pin">
-                        📍
-                    </div>
-
-
-                    <div class="road r1"></div>
-
-                    <div class="road r2"></div>
-
-
-                    <div class="map-label">
-                        MotoResQ Demo Location
-                    </div>
-
                 </div>
 
 
-                <div class="location-data">
-
-
-                    <div>
-
-                        <span>
-                            Latitude
-                        </span>
-
-                        <b>
-                            26.8467° N
-                        </b>
-
-                    </div>
-
-
-                    <div>
-
-                        <span>
-                            Longitude
-                        </span>
-
-                        <b>
-                            80.9462° E
-                        </b>
-
-                    </div>
-
-
-                    <div>
-
-                        <span>
-                            Confidence
-                        </span>
-
-                        <b>
-                            Demo / Prototype
-                        </b>
-
-                    </div>
-
-
-                </div>
-
-
-            </div>
-
-
-        </section>
-
-
-        <!-- =========================
-             ALERT HISTORY
-        ========================== -->
-
-        <section id="history" class="page">
-
-
-            <div class="panel">
-
-                <h2>
-                    Alert History
-                </h2>
-
-
-                <div id="historyList"></div>
-
-            </div>
-
-
-        </section>
-
-
-    </div>
-
-
-    <!-- MODAL -->
-
-    <div id="modal" class="modal hidden">
-
-        <div class="modal-card">
-
-            <button
-                class="close"
-                onclick="closeModal()"
-            >
-                ×
-            </button>
-
-
-            <div id="modalContent"></div>
+            </form>
 
         </div>
 
+    </section>
+
+
+
+    <!-- =================================================
+         EMERGENCY CONTACTS
+    ================================================== -->
+
+    <section
+        id="contacts"
+        class="page"
+    >
+
+
+        <div class="panel">
+
+
+            <div class="panel-head">
+
+                <div>
+
+                    <p class="eyebrow">
+                        EMERGENCY NETWORK
+                    </p>
+
+
+                    <h2>
+                        ☎ Emergency Contacts
+                    </h2>
+
+
+                    <p class="muted">
+                        People to notify during an SOS event.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- CONTACT FORM -->
+
+            <form
+                id="contactForm"
+                class="contact-form"
+            >
+
+
+                <input
+                    id="contactName"
+                    name="contactName"
+                    placeholder="Name"
+                    autocomplete="name"
+                    required
+                >
+
+
+                <input
+                    id="contactPhone"
+                    name="contactPhone"
+                    type="tel"
+                    placeholder="Phone number"
+                    autocomplete="tel"
+                    required
+                >
+
+
+                <input
+                    id="contactRelation"
+                    name="contactRelation"
+                    placeholder="Relationship"
+                    required
+                >
+
+
+                <button
+                    type="submit"
+                    class="primary"
+                >
+                    Add Contact
+                </button>
+
+            </form>
+
+
+
+            <!-- CONTACT LIST -->
+
+            <div
+                id="contactList"
+                class="contact-list"
+            ></div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         LIVE LOCATION
+    ================================================== -->
+
+    <section
+        id="location"
+        class="page"
+    >
+
+
+        <div class="panel">
+
+
+            <p class="eyebrow">
+                LOCATION MONITORING
+            </p>
+
+
+            <h2>
+                📍 Demo Location
+            </h2>
+
+
+            <p class="muted">
+                This location is simulated for the Phase 1
+                frontend prototype.
+            </p>
+
+
+
+            <!-- MAP -->
+
+            <div class="map-demo">
+
+
+                <div class="pin">
+                    📍
+                </div>
+
+
+                <div class="road r1"></div>
+
+                <div class="road r2"></div>
+
+
+                <div class="map-label">
+                    MotoResQ Demo Location
+                </div>
+
+            </div>
+
+
+
+            <!-- LOCATION DATA -->
+
+            <div class="location-data">
+
+
+                <div>
+
+                    <span>
+                        Latitude
+                    </span>
+
+
+                    <b>
+                        26.8467° N
+                    </b>
+
+                </div>
+
+
+
+                <div>
+
+                    <span>
+                        Longitude
+                    </span>
+
+
+                    <b>
+                        80.9462° E
+                    </b>
+
+                </div>
+
+
+
+                <div>
+
+                    <span>
+                        Confidence
+                    </span>
+
+
+                    <b>
+                        Demo / Prototype
+                    </b>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         ALERT HISTORY
+    ================================================== -->
+
+    <section
+        id="history"
+        class="page"
+    >
+
+
+        <div class="panel">
+
+
+            <p class="eyebrow">
+                EMERGENCY LOG
+            </p>
+
+
+            <h2>
+                ◷ Alert History
+            </h2>
+
+
+            <p class="muted">
+                Previous simulated emergency events are
+                displayed below.
+            </p>
+
+
+            <div
+                id="historyList"
+            ></div>
+
+        </div>
+
+    </section>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     EMERGENCY MODAL
+====================================================== -->
+
+<div
+    id="modal"
+    class="modal hidden"
+>
+
+
+    <div class="modal-card">
+
+
+        <button
+            type="button"
+            class="close"
+            onclick="closeModal()"
+            aria-label="Close"
+        >
+            ×
+        </button>
+
+
+        <div id="modalContent"></div>
+
     </div>
 
-
-    <!-- TOAST -->
-
-    <div id="toast"></div>
+</div>
 
 
-    <!-- JAVASCRIPT -->
 
-    <script src="script.js"></script>
+<!-- =====================================================
+     TOAST NOTIFICATION
+====================================================== -->
 
+<div
+    id="toast"
+    role="status"
+    aria-live="polite"
+></div>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+====================================================== -->
+
+<script src="script.js"></script>
+```
 
 </body>
 
