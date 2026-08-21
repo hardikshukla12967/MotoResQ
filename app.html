@@ -3,6 +3,47 @@
 <body class="app-body"><aside><a class="brand" href="index.html">⚡ Moto<span>ResQ</span></a><button class="tab active" data-page="dashboard">⌂ Dashboard</button><button class="tab" data-page="profile">◉ Rider Profile</button><button class="tab" data-page="contacts">☎ Emergency Contacts</button><button class="tab" data-page="location">⌖ Live Location</button><button class="tab" data-page="history">◷ Alert History</button><div class="side-bottom">PHASE 1<br><small>Frontend prototype</small></div></aside>
 <div class="app"><header><div><p class="eyebrow">MOTORESQ COMMAND CENTER</p><h1 id="pageTitle">Dashboard</h1></div><div class="clock" id="clock"></div></header>
 <section id="dashboard" class="page active-page"><div class="grid3"><div class="status-card safe"><span>● LIVE STATUS</span><h2 id="safeText">YOU ARE SAFE</h2><p>Monitoring prototype active</p></div><div class="status-card"><span>DEVICE</span><h2>Connected</h2><p>Demo device • MOTO-001</p></div><div class="status-card"><span>LAST UPDATE</span><h2 id="lastUpdate">Just now</h2><p>Browser simulation</p></div></div><div class="panel"><div class="panel-head"><h2>Quick Actions</h2></div><div class="actions"><button class="danger" onclick="simulateAccident()">🚨 Simulate Accident</button><button class="secondary-btn" onclick="showPage('location')">⌖ View Demo Location</button></div></div></section>
+<!-- SAFETY SCORE -->
+<div class="panel safety-panel">
+
+    <div class="section-header">
+        <div>
+            <h2>🛡️ Safety Score</h2>
+            <p>Complete your safety profile to improve your score.</p>
+        </div>
+
+        <div class="score-number">
+            <span id="safetyScore">0</span>/100
+        </div>
+    </div>
+
+    <div class="progress-bar">
+        <div id="safetyProgress" class="progress-fill"></div>
+    </div>
+
+    <div class="safety-checks">
+
+        <div class="safety-item">
+            <span id="profileCheck">❌</span>
+            <span>Rider profile completed</span>
+            <b>+40</b>
+        </div>
+
+        <div class="safety-item">
+            <span id="contactCheck">❌</span>
+            <span>Emergency contact added</span>
+            <b>+40</b>
+        </div>
+
+        <div class="safety-item">
+            <span id="vehicleCheck">❌</span>
+            <span>Vehicle information added</span>
+            <b>+20</b>
+        </div>
+
+    </div>
+
+</div>
 <section id="profile" class="page"><div class="panel"><h2>Rider Profile</h2><p class="muted">Saved locally in this browser.</p><form id="profileForm" class="form"><label>Name<input id="name" placeholder="Your name"></label><label>Blood Group<input id="blood" placeholder="e.g. O+"></label><label>Medical Condition<input id="medical" placeholder="Optional"></label><label>Allergies<input id="allergies" placeholder="Optional"></label><label>Vehicle Number<input id="vehicle" placeholder="UP XX AB 1234"></label><button class="primary" type="submit">Save Profile</button></form></div></section>
 <section id="contacts" class="page"><div class="panel"><div class="panel-head"><div><h2>Emergency Contacts</h2><p class="muted">People to notify during an SOS event.</p></div></div><form id="contactForm" class="contact-form"><input id="contactName" placeholder="Name" required><input id="contactPhone" placeholder="Phone number" required><input id="contactRelation" placeholder="Relationship" required><button class="primary">Add Contact</button></form><div id="contactList" class="contact-list"></div></div></section>
 <section id="location" class="page"><div class="panel"><h2>Demo Location</h2><div class="map-demo"><div class="pin">📍</div><div class="road r1"></div><div class="road r2"></div><div class="map-label">MotoResQ Demo Location</div></div><div class="location-data"><div><span>Latitude</span><b>26.8467° N</b></div><div><span>Longitude</span><b>80.9462° E</b></div><div><span>Confidence</span><b>Demo / Prototype</b></div></div></div></section>
